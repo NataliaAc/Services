@@ -1,0 +1,39 @@
+.grid-container-stats{
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr 1fr; 
+    grid-template-rows: 1fr ; 
+}
+.grid-container-stats > h1 {
+
+    grid-column: 2 /span 3;
+    padding: 5%;
+    padding-left: 30%;
+    padding-right: 20%;
+    font-size: 5vh;
+
+}
+.grid-container-stats > main > h2{
+
+    font-size: 4vh;
+    padding-left: 10%;
+}
+
+.PieChart {
+
+    grid-column: 2;
+}
+.BarChart {
+
+    grid-column: 3;
+}
+
+
+.select > select{
+
+    font-size: 2vh;
+    border: none;
+    background-color: #dcedfa;
+    
+    
+}
+

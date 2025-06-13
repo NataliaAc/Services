@@ -1,0 +1,14 @@
+.grid-container-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  height: 6vh;
+  width: 100%;
+  background-color: #003b67;
+}
+
+.grid-container-footer > p {
+  grid-column: 2;
+  grid-row: 2;
+  color: aliceblue;
+}
