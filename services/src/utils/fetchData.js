@@ -1,10 +1,9 @@
+import { LIEN_API_GetEmails } from "../config";
+import { LIEN_API_Holidays } from "../config";
+
 export const fetchData = async () => {
   try {
-    const response = await fetch(
-      //"https://server-iis.uccle.intra/APIsendmail2/getlog",
-      "https://localhost:7037/api/sendMail/getlog",
-      { mode: "cors" }
-    );
+    const response = await fetch(`${LIEN_API_GetEmails}`, { mode: "cors" });
 
     if (!response.ok) {
       throw new Error("Erreur dans la réponse de l'API");
@@ -27,11 +26,9 @@ export const fetchData = async () => {
 
 export const fetchHolidays = async () => {
   try {
-    const response = await fetch(
-      //"https://server-iis.uccle.intra/APIsendmail2/getlog",
-      "https://localhost:7037/api/Holiday/list",
-      { mode: "cors" }
-    );
+    const response = await fetch(`${LIEN_API_Holidays}`, {
+      mode: "cors",
+    });
 
     if (!response.ok) {
       throw new Error("Erreur dans la réponse de l'API");
