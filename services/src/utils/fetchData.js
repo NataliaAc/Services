@@ -49,3 +49,36 @@ export const fetchHolidays = async () => {
     throw error; // Lance l'erreur pour qu'elle soit capturée où fetchData est appelée
   }
 };
+
+export const addHoliday = async (newRow) => {
+  const response = await fetch(`/api/holidays`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newRow),
+  });
+
+  if (!response.ok) {
+    throw new Error("Erreur lors de l'ajout");
+  }
+
+  return await response.json(); // doit retourner l’objet complet avec son vrai `id`
+};
+
+export const updateHoliday = async (updatedHoliday) => {
+  const response = await fetch(`/api/holidays/${updatedHoliday.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedHoliday),
+  });
+
+  if (!response.ok) throw new Error("Erreur mise à jour");
+  return await response.json();
+};
+export const deleteHoliday = async (id) => {
+  const response = await fetch(`/api/holidays/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) throw new Error("Erreur lors de la suppression");
+  return true;
+};
