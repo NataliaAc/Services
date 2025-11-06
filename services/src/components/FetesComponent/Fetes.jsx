@@ -25,6 +25,8 @@ const Fetes = () => {
   const apiRef = useGridApiRef();
   const [rowModesModel, setRowModesModel] = useState({});
   const [openForm, setOpenForm] = useState(false);
+  const [scanValue, setScanValue] = useState("");
+  const [code, setCode] = useState("");
   const [formValues, setFormValues] = useState({
     nomFr: "",
     nomNL: "",
@@ -203,12 +205,29 @@ const Fetes = () => {
     },
   ];
 
+  const handleKeyDown = (e) => {
+    console.log("e:", e);
+    if (e.key === "Enter") {
+      console.log("Code scanné :", code);
+      // Ici tu peux envoyer à ton backend ou lancer une recherche
+      setCode(""); // reset
+    }
+  };
   return (
     <div style={{ width: "80%", margin: "auto" }}>
       <h1>Tableau des fêtes</h1>
       <button onClick={handleAddRow} style={{ marginBottom: "1rem" }}>
         Ajouter une fête
       </button>
+
+      <input
+        autoFocus
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder="Scannez un code-barres..."
+        className="border p-2 rounded"
+      />
       <DataGrid
         apiRef={apiRef}
         showToolbar

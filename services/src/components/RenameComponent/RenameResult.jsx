@@ -1,36 +1,59 @@
 import React from "react";
 import { normalizeString } from "../../utils/normalizeString";
-
+import { Button, Box } from "@mui/material";
 const RenameResult = ({
   phrase,
   lang,
   categorie,
-  prefixMap,
-  dateAfterPrefix,
-  selectedDate,
+  categoriePosition,
+  typeDoc,
+  typePosition,
+  prefixService,
+  prefixType,
+  dateEnabled,
+  date,
+  datePosition,
 }) => {
   if (!phrase) return null;
 
-  // Si selectedDate est fourni, on l'utilise, sinon date actuelle
-  const now = selectedDate ? new Date(selectedDate) : new Date();
-
-  const annee = now.getFullYear();
-  const mois = String(now.getMonth() + 1).padStart(2, "0");
-  const jour = String(now.getDate()).padStart(2, "0");
-  const fullDate = `${annee}-${mois}-${jour}`;
-
   const normalized = normalizeString(phrase);
   const langSuffix = Array.isArray(lang) ? lang.join("_") : lang;
-  const prefix = prefixMap[categorie] || "";
 
-  let renamed;
-  if (prefix && dateAfterPrefix) {
-    renamed = `${prefix}_${fullDate}_${normalized}_U1180_${langSuffix}`;
-  } else if (prefix) {
-    renamed = `${prefix}_${normalized}_U1180_${langSuffix}`;
-  } else {
-    renamed = `${normalized}_U1180_${langSuffix}`;
+  // Формируем массив элементов для сборки строки
+  const parts = [];
+
+  // Категория
+  if (categorie !== "none") {
+    const prefix = prefixService[categorie] || "";
+    if (categoriePosition === "start") parts.unshift(prefix);
+    else parts.push(prefix);
   }
+
+  // Тип документа
+  if (typeDoc !== "none") {
+    const prefix = prefixType[typeDoc] || "";
+    if (typePosition === "start") parts.unshift(prefix);
+    else parts.push(prefix);
+  }
+
+  // Дата
+  if (dateEnabled) {
+    const now = date ? new Date(date) : new Date();
+    const annee = now.getFullYear();
+    const mois = String(now.getMonth() + 1).padStart(2, "0");
+    const jour = String(now.getDate()).padStart(2, "0");
+    const fullDate = `${annee}-${mois}-${jour}`;
+    if (datePosition === "start") parts.unshift(fullDate);
+    else parts.push(fullDate);
+  }
+
+  // Основная фраза всегда в центре, после префиксов, до суффикса
+  parts.push(normalized);
+
+  // Суффикс
+  parts.push(`U1180_${langSuffix}`);
+
+  const renamed = parts.join("_");
 
   const handleCopy = async () => {
     try {
@@ -42,16 +65,17 @@ const RenameResult = ({
   };
 
   return (
-    <div style={{ marginTop: 20 }}>
+    <Box style={{ marginTop: 20 }}>
       <h3>Phrase renommée :</h3>
       <p style={{ fontWeight: "bold" }}>{renamed}</p>
-      <button
+      <Button
         onClick={handleCopy}
         style={{ padding: "6px 12px", cursor: "pointer" }}
+        variant="contained"
       >
         Copier
-      </button>
-    </div>
+      </Button>
+    </Box>
   );
 };
 

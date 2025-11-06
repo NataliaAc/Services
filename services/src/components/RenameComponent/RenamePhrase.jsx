@@ -1,102 +1,233 @@
 import React, { useState } from "react";
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  Stack,
+  Paper,
+  Grid,
+  Autocomplete,
+} from "@mui/material";
 import RenameResult from "./RenameResult";
 
-const PREFIXES = {
+const PREFIXESSERVICE = {
+  "Action Sociale": "SOCI",
+  "Activités économiques": "ECON",
+  "Affaires Générales": "Gene",
+  Animaux: "ANIM",
   "Conseil Communal": "CC",
   Culture: "CULT",
+  Empoi: "EMPL",
+  Enfance: "ENFA",
+  Jeunesse: "JEUN",
+  Enseignement: "ENSE",
   Environment: "ENV",
   Mobilité: "MOBI",
   Population: "POP",
-  Séniors: "SENI",
-  Urbanisme: "URBA",
   Prévention: "PREV",
+  Propreté: "PROP",
+  Santé: "SANT",
+  Séniors: "SENI",
+  Stationnement: "STAT",
+  Urbanisme: "URBA",
+  Voirie: "VOIR",
+  Travaux: "TRAV",
 };
 
-const RenamePhrase = () => {
+const PREFIXESTYPE = {
+  Formulaire: "FORM",
+  Reglement: "REGL",
+  Affiche: "AFF",
+};
+
+const RenamePhraseUI = () => {
   const [phrase, setPhrase] = useState("");
   const [lang, setLang] = useState("fr");
+
   const [categorie, setCategorie] = useState("none");
-  const [dateAfterPrefix, setDateAfterPrefix] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(""); // état pour la date personnalisée
+  const [categoriePosition, setCategoriePosition] = useState("start");
+
+  const [typeDoc, setTypeDoc] = useState("none");
+  const [typePosition, setTypePosition] = useState("start");
+
+  const [dateEnabled, setDateEnabled] = useState(false);
+  const [date, setDate] = useState("");
+  const [datePosition, setDatePosition] = useState("start");
 
   return (
-    <div
-      style={{
-        maxWidth: 600,
-        margin: "20px 40px",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
-      <h1>Normalize String</h1>
-      <nav style={{ marginBottom: 20 }}>
-        <button onClick={() => setLang("fr")}>FR</button>{" "}
-        <button onClick={() => setLang("nl")}>NL</button>{" "}
-        <button onClick={() => setLang(["fr", "nl"])}>FR + NL</button>
-      </nav>
+    <Box sx={{ mx: "auto", mt: 4 }}>
+      <Typography variant="h4" gutterBottom align="center">
+        Normalize String
+      </Typography>
 
-      <select
-        value={categorie}
-        onChange={(e) => setCategorie(e.target.value)}
-        style={{
-          marginBottom: 20,
-          padding: "8px",
-          fontSize: "16px",
-          width: "100%",
-        }}
-      >
-        <option value="none">Aucun préfixe</option>
-        {Object.keys(PREFIXES).map((cat) => (
-          <option key={cat} value={cat}>
-            {cat}
-          </option>
-        ))}
-      </select>
+      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        {/* Colonne gauche : toutes les options */}
+        <Grid size={6}>
+          <Card sx={{ mb: 3 }}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                Langue
+              </Typography>
+              <Stack direction="row" spacing={2} mb={2}>
+                <Button
+                  variant={lang === "fr" ? "contained" : "outlined"}
+                  onClick={() => setLang("fr")}
+                >
+                  FR
+                </Button>
+                <Button
+                  variant={lang === "nl" ? "contained" : "outlined"}
+                  onClick={() => setLang("nl")}
+                >
+                  NL
+                </Button>
+                <Button
+                  variant={Array.isArray(lang) ? "contained" : "outlined"}
+                  onClick={() => setLang(["fr", "nl"])}
+                >
+                  FR + NL
+                </Button>
+              </Stack>
 
-      <label style={{ display: "block", marginBottom: 20 }}>
-        <input
-          type="checkbox"
-          checked={dateAfterPrefix}
-          onChange={(e) => setDateAfterPrefix(e.target.checked)}
-          style={{ marginRight: 8 }}
-        />
-        Mettre la date après le préfixe
-      </label>
+              <Typography variant="h6" gutterBottom>
+                Options
+              </Typography>
+              <Stack spacing={2}>
+                {/* Date */}
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={dateEnabled}
+                      onChange={(e) => setDateEnabled(e.target.checked)}
+                    />
+                  }
+                  label="Ajouter la date"
+                />
+                {dateEnabled && (
+                  <>
+                    <TextField
+                      variant="outlined"
+                      type="date"
+                      value={date}
+                      onChange={(e) => setDate(e.target.value)}
+                      fullWidth
+                    />
+                    <FormControl fullWidth>
+                      <InputLabel>Position date</InputLabel>
+                      <Select
+                        value={datePosition}
+                        onChange={(e) => setDatePosition(e.target.value)}
+                        label="Position date"
+                      >
+                        <MenuItem value="start">Au début</MenuItem>
+                        <MenuItem value="end">À la fin</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </>
+                )}
 
-      {/* Afficher input date seulement si checkbox cochée */}
-      {dateAfterPrefix && (
-        <input
-          type="date"
-          value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
-          style={{
-            marginBottom: 20,
-            padding: "8px",
-            fontSize: "16px",
-            width: "100%",
-          }}
-        />
-      )}
+                {/* Catégorie */}
 
-      <input
-        type="text"
-        placeholder="Entrez une phrase"
-        value={phrase}
-        onChange={(e) => setPhrase(e.target.value)}
-        style={{ width: "100%", padding: "8px", fontSize: "16px" }}
-      />
+                <InputLabel>Catégorie</InputLabel>
+                <Autocomplete
+                  options={Object.keys(PREFIXESSERVICE)}
+                  value={categorie !== "none" ? categorie : null}
+                  onChange={(event, newValue) =>
+                    setCategorie(newValue || "none")
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Catégorie"
+                      variant="outlined"
+                    />
+                  )}
+                />
 
-      {phrase && (
-        <RenameResult
-          phrase={phrase}
-          lang={lang}
-          categorie={categorie}
-          prefixMap={PREFIXES}
-          dateAfterPrefix={dateAfterPrefix}
-          selectedDate={selectedDate} // passe la date personnalisée
-        />
-      )}
-    </div>
+                {categorie !== "none" && (
+                  <FormControl fullWidth>
+                    <InputLabel>Position catégorie</InputLabel>
+                    <Select
+                      value={categoriePosition}
+                      onChange={(e) => setCategoriePosition(e.target.value)}
+                      label="Position catégorie"
+                    >
+                      <MenuItem value="start">Au début</MenuItem>
+                      <MenuItem value="end">À la fin</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+
+                {/* Type */}
+                <InputLabel>Type</InputLabel>
+                <Autocomplete
+                  options={Object.keys(PREFIXESTYPE)}
+                  value={typeDoc !== "none" ? typeDoc : null}
+                  onChange={(event, newValue) => setTypeDoc(newValue || "none")}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Type" variant="outlined" />
+                  )}
+                />
+
+                {typeDoc !== "none" && (
+                  <FormControl fullWidth>
+                    <InputLabel>Position type</InputLabel>
+                    <Select
+                      value={typePosition}
+                      onChange={(e) => setTypePosition(e.target.value)}
+                      label="Position type"
+                    >
+                      <MenuItem value="start">Au début</MenuItem>
+                      <MenuItem value="end">À la fin</MenuItem>
+                    </Select>
+                  </FormControl>
+                )}
+
+                {/* Phrase */}
+                <TextField
+                  label="Entrez une phrase"
+                  variant="outlined"
+                  value={phrase}
+                  onChange={(e) => setPhrase(e.target.value)}
+                  fullWidth
+                />
+              </Stack>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Colonne droite : phrase renommée + bouton copier */}
+        <Grid size={5}>
+          {phrase && (
+            <Paper elevation={3} sx={{ p: 2 }}>
+              <RenameResult
+                phrase={phrase}
+                lang={lang}
+                categorie={categorie}
+                categoriePosition={categoriePosition}
+                typeDoc={typeDoc}
+                typePosition={typePosition}
+                prefixService={PREFIXESSERVICE}
+                prefixType={PREFIXESTYPE}
+                dateEnabled={dateEnabled}
+                date={date}
+                datePosition={datePosition}
+              />
+            </Paper>
+          )}
+        </Grid>
+      </Grid>
+    </Box>
   );
 };
 
-export default RenamePhrase;
+export default RenamePhraseUI;

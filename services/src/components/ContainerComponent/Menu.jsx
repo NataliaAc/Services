@@ -2,9 +2,9 @@ import React from "react";
 
 const menuItems = [
   { id: "normalize", label: "Normalize String" },
-  { id: "emails", label: "Emails" },
-  { id: "stats", label: "Statistique" },
-  { id: "fetes", label: "Fêtes" },
+  // { id: "emails", label: "Emails" },
+  // { id: "stats", label: "Statistique" },
+  // { id: "fetes", label: "Fêtes" },
 ];
 
 export default function Menu({ selectedMenu, onSelect }) {
