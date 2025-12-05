@@ -100,7 +100,7 @@ const Tableau = () => {
           params.row.siEnvoi ? "cell-envoye" : "cell-non-envoye"
         }
         sx={{ backgroundColor: "#ffffff" }}
-        getRowId={(row) => row.idLog}
+        getRowId={(row) => row.idlog}
         loading={loading}
         pageSize={10}
         pageSizeOptions={[5, 10, 25, 50, 100]}
