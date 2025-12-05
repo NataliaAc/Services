@@ -19,6 +19,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
+import { Button } from "@mui/material";
 
 const Fetes = () => {
   const [data, setData] = useState([]);
@@ -50,7 +51,10 @@ const Fetes = () => {
 
     obtenirData();
   }, []);
-
+  const [rowSelectionModel, setRowSelectionModel] = useState({
+    type: "include",
+    ids: new Set(),
+  });
   const handleRowUpdate = async (newRow, oldRow) => {
     if (!newRow.nomFr.trim() || !newRow.nomNL.trim()) {
       throw new Error("Les champs 'Nom FR' et 'Nom NL' sont obligatoires.");
@@ -68,7 +72,11 @@ const Fetes = () => {
       throw error;
     }
   };
-
+  const handleGroupAction = () => {
+    const selectedRowsMap = apiRef.current.getSelectedRows();
+    const selectedObjects = Array.from(selectedRowsMap.values()); // ← récupère une liste d'objets
+    console.log("Objets sélectionnés :", selectedObjects);
+  };
   const handleAddRow = async () => {
     const nouvelleFete = {
       nomFr: "",
@@ -216,18 +224,16 @@ const Fetes = () => {
   return (
     <div style={{ width: "80%", margin: "auto" }}>
       <h1>Tableau des fêtes</h1>
-      <button onClick={handleAddRow} style={{ marginBottom: "1rem" }}>
+      <Button variant="outlined" onClick={handleGroupAction}>
+        Action groupée
+      </Button>
+      <Button
+        variant="outlined"
+        onClick={handleAddRow}
+        style={{ margin: "5px" }}
+      >
         Ajouter une fête
-      </button>
-
-      <input
-        autoFocus
-        value={code}
-        onChange={(e) => setCode(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Scannez un code-barres..."
-        className="border p-2 rounded"
-      />
+      </Button>
       <DataGrid
         apiRef={apiRef}
         showToolbar
@@ -239,6 +245,8 @@ const Fetes = () => {
         rowHeight={45}
         pageSizeOptions={[5, 10, 25, 50, 100]}
         checkboxSelection
+        rowSelectionModel={rowSelectionModel}
+        onRowSelectionModelChange={(newModel) => setRowSelectionModel(newModel)}
         processRowUpdate={handleRowUpdate}
         onProcessRowUpdateError={(error) => {
           alert("Erreur : " + error.message);

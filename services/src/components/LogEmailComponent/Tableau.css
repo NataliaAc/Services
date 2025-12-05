@@ -3,8 +3,11 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: left;
+  justify-content: left;
+}
+.button {
+  width: 20%;
 }
 .MuiDataGrid-root .cell-envoye {
   background-color: #fdfdfd !important; /* Vert clair pour "Envoyé" */
