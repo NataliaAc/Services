@@ -41,12 +41,25 @@ const PREFIXESSERVICE = {
   Urbanisme: "URBA",
   Voirie: "VOIR",
   Travaux: "TRAV",
+  Taxe: "Taxe",
+  Transparence : "TRANSP"
 };
 
 const PREFIXESTYPE = {
-  Formulaire: "FORM",
-  Reglement: "REGL",
   Affiche: "AFF",
+  Avies: "AVIES",
+  Formulaire: "FORM",
+  Interpellations: "Interpellations",
+  "Interpellations citoyennes": "IC",
+  "Notes explicatives": "NE",
+  "Notes explicatives complémentaires": "NEC",
+  "Ordre du jour": "ODJ",
+  "Ordre du jour complémentaire": "ODJC",
+  Motions: "Motions",
+  "Questions écrites": "QE",
+  "Questions orales": "QO",
+  Reglement: "REGL",
+  Registre: "Registre",
 };
 
 const RenamePhraseUI = () => {
