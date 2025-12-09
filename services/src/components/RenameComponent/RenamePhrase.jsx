@@ -42,7 +42,7 @@ const PREFIXESSERVICE = {
   Voirie: "VOIR",
   Travaux: "TRAV",
   Taxe: "Taxe",
-  Transparence : "TRANSP"
+  Transparence: "TRANSP",
 };
 
 const PREFIXESTYPE = {
@@ -125,7 +125,7 @@ const RenamePhraseUI = () => {
                   }
                   label="Ajouter la date"
                 />
-                {dateEnabled && (
+                {dateEnabled && categorie !== "Conseil Communal" && (
                   <>
                     <TextField
                       variant="outlined"
@@ -166,7 +166,7 @@ const RenamePhraseUI = () => {
                   )}
                 />
 
-                {categorie !== "none" && (
+                {categorie !== "none" && categorie !== "Conseil Communal" && (
                   <FormControl fullWidth>
                     <InputLabel>Position catégorie</InputLabel>
                     <Select
@@ -191,7 +191,7 @@ const RenamePhraseUI = () => {
                   )}
                 />
 
-                {typeDoc !== "none" && (
+                {typeDoc !== "none" && categorie !== "Conseil Communal" && (
                   <FormControl fullWidth>
                     <InputLabel>Position type</InputLabel>
                     <Select
@@ -220,7 +220,8 @@ const RenamePhraseUI = () => {
 
         {/* Colonne droite : phrase renommée + bouton copier */}
         <Grid size={5}>
-          {phrase && (
+          {
+            /* {phrase && ( }*/
             <Paper elevation={3} sx={{ p: 2 }}>
               <RenameResult
                 phrase={phrase}
@@ -236,7 +237,7 @@ const RenamePhraseUI = () => {
                 datePosition={datePosition}
               />
             </Paper>
-          )}
+          }
         </Grid>
       </Grid>
     </Box>
