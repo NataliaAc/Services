@@ -125,7 +125,7 @@ const RenamePhraseUI = () => {
                   }
                   label="Ajouter la date"
                 />
-                {dateEnabled && categorie !== "Conseil Communal" && (
+                {dateEnabled && (
                   <>
                     <TextField
                       variant="outlined"
@@ -134,17 +134,20 @@ const RenamePhraseUI = () => {
                       onChange={(e) => setDate(e.target.value)}
                       fullWidth
                     />
-                    <FormControl fullWidth>
-                      <InputLabel>Position date</InputLabel>
-                      <Select
-                        value={datePosition}
-                        onChange={(e) => setDatePosition(e.target.value)}
-                        label="Position date"
-                      >
-                        <MenuItem value="start">Au début</MenuItem>
-                        <MenuItem value="end">À la fin</MenuItem>
-                      </Select>
-                    </FormControl>
+
+                    {categorie !== "Conseil Communal" && (
+                      <FormControl fullWidth>
+                        <InputLabel>Position date</InputLabel>
+                        <Select
+                          value={datePosition}
+                          onChange={(e) => setDatePosition(e.target.value)}
+                          label="Position date"
+                        >
+                          <MenuItem value="start">Au début</MenuItem>
+                          <MenuItem value="end">À la fin</MenuItem>
+                        </Select>
+                      </FormControl>
+                    )}
                   </>
                 )}
 
